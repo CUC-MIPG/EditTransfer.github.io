@@ -48,7 +48,9 @@
 /* 固定的第一张图片样式 */
 .fixed-image {
     flex: 0 0 auto;
+    
     width: 300px;
+
     display: flex; /* 添加flex布局 */
     align-items: center; /* 垂直居中对齐 */
 }
@@ -56,7 +58,8 @@
 .fixed-image img {
     width: 100%;
     height: auto;
-    display: block;
+    display: flex;
+    margin-bottom: 235px;
 }
 
 .marquee-wrapper {
@@ -74,18 +77,17 @@
 .marquee-inner {
     display: flex;
     width: 200%;
-    animation: marquee 5s linear infinite;
 }
 
 .marquee-inner:hover {
     animation-play-state: paused;
 }
-
 .marquee-inner span {
     display: flex;
     width: 100%;
     gap: 20px;
     align-items: center; /* 垂直居中对齐 */
+    animation: marquee 100s linear infinite; /* 时间参数 */
 }
 
 .marquee-item {
@@ -106,7 +108,7 @@
         transform: translateX(0);
     }
     100% {
-        transform: translateX(-50%);
+        transform: translateX(-800%);
     }
 }
 
@@ -227,11 +229,11 @@
 <section class="hero2">
   <div class="is-max-desktop">
       <h2 class="title">Edit Transfer Examples</h2>
-      <div class="marquee-container">
-          <!-- 固定的第一张图片 -->
+
+        <div class="marquee-container">
           <div class="fixed-image">
-              <img src="static2/rolling_results/static.png" alt="Fixed Image">
-          </div>
+            <img src="static2/rolling_results/static.png" alt="Fixed Image">
+        </div>
           <!-- 滚动的图片部分 -->
           <div class="marquee-wrapper">
               <div class="marquee-block">
@@ -316,7 +318,7 @@
                       </div>
                   </div>
               </div>
-          </div>
+         </div>
       </div>
   </section>
 
@@ -360,6 +362,7 @@ remain noise-free. (c) Finally, we cast Edit Transfer as an image generation tas
 random noise and concatenating it with the clean tokens \(c_I\). Leveraging the enhanced in-context capability of the fine-tuned DiT blocks,
 the model generates \(I_t\), effectively transferring the same edits from the top row to the bottom-left image.
    </p>
+   <br></br>
    <h3 class="title is-3">Traning data samples.</h3>
    <div class="content has-text-justified">
      <img src="static2/dataset.png" />
@@ -367,32 +370,19 @@ the model generates \(I_t\), effectively transferring the same edits from the to
    <p class="content has-text-justified">
     To encode a clear "source image \(\rightarrow\) edited image" order, we arrange each example-request pair into a 2 × 2 composite: the first row contains the example pair (Is, It), and the second row contains the request pair \((\hat{I}_s, \hat{I}_t)\).
   </p>
+  <br><br>
+  <h3 class="title is-3">Generalization Performance</h3>
+  <div class="content has-text-justified">
+    <img src="static2/generalization.png" />
+  </div>
+  <p class="content has-text-justified">
+    <b>Generalization performance of Edit Transfer.</b> Our model demonstrates remarkable generalization by: (b) Generating novel
+pose variations within a given editing type, even if such variations were unseen during training; (c) Flexibly combining different editing
+types; (d) Transferring its capabilities across other species
+  </p>
 </div>
 </section>
 
-
-
-
-
-<section class="section hero"></section>
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column">
-        <h2 class="title is-3">Generalization Performance</h2>
-        <p class="content has-text-justified">
-        </p>
-        <div class="content has-text-justified">
-          <img src="static2/generalization.png" />
-        </div>
-        <p class="content has-text-justified">
-          <b>Generalization performance of Edit Transfer.</b> Our model demonstrates remarkable generalization by: (b) Generating novel
-pose variations within a given editing type, even if such variations were unseen during training; (c) Flexibly combining different editing
-types; (d) Transferring its capabilities across other species
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
 
 
 
