@@ -1,1 +1,1 @@
-The webpage of our paper: ***FreeEdit: Mask-free Reference-based Image Editing with Multi-modal Instruction***.
+The webpage of our paper: ***Edit Transfer: Learning Image Editing via Vision In-Context Relations***.

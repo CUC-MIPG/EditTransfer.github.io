@@ -1,71 +1,158 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+
+  
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FreeEdit: Mask-free Reference-based Image Editing with Multi-modal Instruction</title>
+  <title>Edit Transfer: Learning Image Editing via Vision In-Context Relations</title>
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
   <link rel="stylesheet" href="./static/css/bulma.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body);"></script>
+
 </head>
 
+
+
+
 <style>
-  .section.hero {
-    margin-bottom: 0px; /* 移除或减小底部外边距 */
-  }
 
-  .hero {
-    margin-bottom: -80px; /* 移除或减小底部外边距 */
-  }
-
-  .hero2 {
+.hero2 {
     margin-bottom: -200px; /* 移除或减小底部外边距 */
     margin-top: 100px; /* 移除或减小底部外边距 */
   }
-  
-  .content1 {
-      text-align: left;
-      margin-bottom: 80px; /* 移除或减小底部外边距 */
-  }
 
-  .marquee-wrapper {
-  overflow: hidden;
-  white-space: nowrap;
+.title {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.marquee-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    gap: 20px;
+    align-items: center; /* 垂直居中对齐 */
+}
+
+/* 固定的第一张图片样式 */
+.fixed-image {
+    flex: 0 0 auto;
+    width: 300px;
+    display: flex; /* 添加flex布局 */
+    align-items: center; /* 垂直居中对齐 */
+}
+
+.fixed-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.marquee-wrapper {
+    flex: 1;
+    overflow: hidden;
+    display: flex; /* 添加flex布局 */
+    align-items: center; /* 垂直居中对齐 */
 }
 
 .marquee-block {
-  display: inline-block;
-  white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
 }
 
 .marquee-inner {
-  display: inline-block;
-  white-space: nowrap;
-  animation: marquee 60s linear infinite; /* 调整时间以匹配内容长度 */
+    display: flex;
+    width: 200%;
+    animation: marquee 5s linear infinite;
 }
 
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-100%); } /* 这里的百分比应该根据内容宽度调整 */
+.marquee-inner:hover {
+    animation-play-state: paused;
+}
+
+.marquee-inner span {
+    display: flex;
+    width: 100%;
+    gap: 20px;
+    align-items: center; /* 垂直居中对齐 */
 }
 
 .marquee-item {
-  display: inline-block;
-  vertical-align: top;
-  margin-right: 10px; /* 根据需要调整间距 */
-  padding: 0; /* 确保没有内边距 */
+    flex: 0 0 auto;
+    width: 300px;
+    display: flex; /* 添加flex布局 */
+    align-items: center; /* 垂直居中对齐 */
 }
 
-/* 移除两个 span 之间的间隔 */
-.marquee-inner > span {
-  margin: 0;
-  padding: 0;
+.marquee-item img {
+    width: 100%;
+    height: auto;
+    display: block;
 }
+
+@keyframes marquee {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* 统一图片大小控制 */
+.fixed-image img,
+.marquee-item img {
+    max-height: 80vh;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .marquee-container {
+        flex-direction: column;
+    }
+    
+    .fixed-image,
+    .marquee-item {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+}
+.section.hero {
+  margin-bottom: 0px; /* 移除或减小底部外边距 */
+}
+
+.hero {
+  margin-bottom: -80px; /* 移除或减小底部外边距 */
+}
+
+.content1 {
+    text-align: left;
+    margin-bottom: 80px; /* 移除或减小底部外边距 */
+}
+
 </style>
 
 <body>
+
+
+
+
+
 
 
 <section class="hero">
@@ -75,24 +162,17 @@
       </div>
       <div class="container has-text-centered">
         <h1 class="title is-1 publication-title">
-          FreeEdit: 
+          Edit Transfer: 
         </h1>
         <h3 class="title is-3 publication-title">
-          Mask-free Reference-based Image Editing with Multi-modal Instruction
+          Learning Image Editing via Vision In-Context Relations
         </h3>
         <div class="is-size-5 publication-authors">
-          <div class="author-block"><a href="https://scholar.google.cz/citations?user=xFkLeUAAAAAJ&hl=zh-CN&oi=ao">Runze He</a><sup>1</sup>, </div>
-          <div class="author-block"><a href="">Kai Ma</a><sup>2</sup>, </div>
-          <div class="author-block"><a href="https://scholar.google.cz/citations?user=j5rBSw0AAAAJ&hl=zh-CN&oi=ao">Linjiang Huang</a><sup>3</sup>, </div>
-          <div class="author-block"><a href="https://scholar.google.cz/citations?user=hVbSuo0AAAAJ&hl=zh-CN&oi=ao">Shaofei Huang</a><sup>1</sup>, </div>
+          <div class="author-block"><a href="https://github.com/Orannue">Lan Chen</a><sup>1</sup>, </div>
+          <div class="author-block"><a href="https://scholar.google.com/citations?user=VTQZF6EAAAAJ&hl=zh-CN">Qi Mao</a><sup>1</sup>, </div>
+          <div class="author-block"><a href="https://scholar.google.com/citations?user=YpfrXyQAAAAJ&hl=zh-CN">Yuchao Gu</a><sup>2</sup>, </div>
+          <div class="author-block"><a href="https://sites.google.com/view/showlab">Mike Zheng Shou</a><sup>2</sup>, </div>
 
-          <div class="author-block"><a href="https://scholar.google.cz/citations?hl=zh-CN&user=sj4FqEgAAAAJ">Jialin Gao</a><sup>2</sup>, </div>
-
-          <div class="author-block"><a href="https://scholar.google.cz/citations?hl=zh-CN&user=JXV5yrZxj5MC">Xiaoming Wei</a><sup>2</sup>, </div>
-          <div class="author-block"><a href="">Jiao Dai</a><sup>1</sup>, </div><br>
-          <div class="author-block"><a href="https://scholar.google.cz/citations?user=0b_BPiMAAAAJ&hl=zh-CN&oi=ao">Jizhong Han</a><sup>1</sup>, </div>
-
-          <div class="author-block"><a href="https://scholar.google.cz/citations?user=-QtVtNEAAAAJ&hl=zh-CN&oi=ao">Si Liu</a><sup>3</sup> </div>
           <!-- <div class="author-block">FU Lean, </div> -->
 
           <!-- <div class="author-block"><a href="http://guanbinli.com/">Li Guanbin</a> </div> -->
@@ -102,8 +182,8 @@
         <!-- She received her Ph.D. degree from Institute of Computing Technology, Chinese Academy of Sciences. Her research interests include multimedia information processing and big data storage. She has published over 60 papers and held over 10 domestic patents. -->
 
         <div class="is-size-5 publication-authors">
-          <span class="author-block"><sup>1</sup>Institute of Information Engineering, Chinese Academy of Sciences,</span><br>
-          <span class="author-block"><sup>2</sup>Meituan, <sup>3</sup>Beihang University</span><br>
+          <span class="author-block"><sup>1</sup>MIPG, Communication University of China</span><br>
+          <span class="author-block"><sup>2</sup>Show Lab, National University of Singapore</span><br>
           <!-- <span class="author-block">Meituan,</span><br> -->
           <!-- <span class="author-block">&nbsp&nbsp<sup>*</sup>Equal Contribution &nbsp&nbsp<sup>†</sup>Project Lead</span> -->
         </div>
@@ -122,7 +202,7 @@
                 </span>
                 
                 <span class="link-block">
-                  <a href="https://github.com/hrz2000/FreeEdit"
+                  <a href="https://github.com/CUC-MIPG/Edit-Transfer"
                   class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                   <!-- <i class="ai ai-arxiv"></i> -->
@@ -138,73 +218,125 @@
   </div>
 </section>
 
+
+
+
+
+
+
 <section class="hero2">
   <div class="is-max-desktop">
-    <h2 class="title is-2, columns is-centered">Image Editing Examples</h2>
-    <div class="marquee-wrapper">
-        <div class="marquee-block">
-          <div class="marquee-inner to-left">
-            <span>
-              <div class="marquee-item"><img class="image" src="static2/refer1.png"></div>
-              <div class="marquee-item"><img class="image" src="static2/add1.png"></div>
-              <div class="marquee-item"><img class="image" src="static2/rm1.png"></div>
-              <div class="marquee-item"><img class="image" src="static2/t2.png"></div>
-              <div class="marquee-item"><img class="image" src="static2/refer2.png"></div>
-              <div class="marquee-item"><img class="image" src="static2/rm2.png"></div>
-              <div class="marquee-item"><img class="image" src="static2/add2.png"></div>
-              <div class="marquee-item"><img class="image" src="static2/t1.png"></div>
-            </span>
-            <span>
-              <!-- <div class="marquee-item"><img class="image" src="static2/add4.png"></div> -->
-              <!-- <div class="marquee-item"><img class="image" src="static2/rm3.png"></div> -->
-              <div class="marquee-item"><img class="image" src="static2/refer4.png"></div>
-              <div class="marquee-item"><img class="image" src="static2/refer3.png"></div>
-              <div class="marquee-item"><img class="image" src="static2/add3.png"></div>
-              <div class="marquee-item"><img class="image" src="static2/rm4.png"></div>
-              <div class="marquee-item"><img class="image" src="static2/rep1.png"></div>
-              <div class="marquee-item"><img class="image" src="static2/rep2.png"></div>
-              <div class="marquee-item"><img class="image" src="static2/rep3.png"></div>
-              <div class="marquee-item"><img class="image" src="static2/rep4.png"></div>
-            </span>
-        </div>
-    </div>
+      <h2 class="title">Edit Transfer Examples</h2>
+      <div class="marquee-container">
+          <!-- 固定的第一张图片 -->
+          <div class="fixed-image">
+              <img src="static2/rolling_results/static.png" alt="Fixed Image">
+          </div>
+          <!-- 滚动的图片部分 -->
+          <div class="marquee-wrapper">
+              <div class="marquee-block">
+                  <div class="marquee-inner to-left">
+                      <span>
+                              <div class="marquee-item">
+                                  <img src="static2/rolling_results/1.png" alt="Image 1">
+                              </div>
+                              <div class="marquee-item">
+                                  <img src="static2/rolling_results/2.png" alt="Image 2">
+                              </div>
+                              <div class="marquee-item">
+                                <img src="static2/rolling_results/3.png" alt="Image 3">
+                              </div>
+                              <div class="marquee-item">
+                                <img src="static2/rolling_results/4.png" alt="Image 4">
+                              </div>
+                              <div class="marquee-item">
+                                <img src="static2/rolling_results/5.png" alt="Image 5">
+                              </div>
+                              <div class="marquee-item">
+                                <img src="static2/rolling_results/6.png" alt="Image 6">
+                              </div>
+                              <div class="marquee-item">
+                                <img src="static2/rolling_results/7.png" alt="Image 7">
+                              </div>
+                              <div class="marquee-item">
+                                <img src="static2/rolling_results/8.png" alt="Image 8">
+                              </div>
+                              <div class="marquee-item">
+                                <img src="static2/rolling_results/9.png" alt="Image 9">
+                              </div>
+                              <div class="marquee-item">
+                                <img src="static2/rolling_results/10.png" alt="Image 10">
+                              </div>
+                              <div class="marquee-item">
+                                <img src="static2/rolling_results/11.png" alt="Image 11">
+                              </div>
+                              <div class="marquee-item">
+                                <img src="static2/rolling_results/12.png" alt="Image 12">
+                              </div>
+                              <div class="marquee-item">
+                                <img src="static2/rolling_results/13.png" alt="Image 13">
+                              </div>
+                              <div class="marquee-item">
+                                <img src="static2/rolling_results/14.png" alt="Image 14">
+                              </div>
+                              <div class="marquee-item">
+                                <img src="static2/rolling_results/15.png" alt="Image 15">
+                              </div>
+                              <div class="marquee-item">
+                                <img src="static2/rolling_results/16.png" alt="Image 16">
+                              </div>
+                              <div class="marquee-item">
+                                <img src="static2/rolling_results/17.png" alt="Image 17">
+                              </div>
+                              <div class="marquee-item">
+                                <img src="static2/rolling_results/18.png" alt="Image 18">
+                              </div>
+                              <div class="marquee-item">
+                                <img src="static2/rolling_results/19.png" alt="Image 19">
+                              </div>
+                              <div class="marquee-item">
+                                <img src="static2/rolling_results/20.png" alt="Image 20">
+                              </div>
+                              <div class="marquee-item">
+                                <img src="static2/rolling_results/21.png" alt="Image 21">
+                              </div>
+                              <div class="marquee-item">
+                                <img src="static2/rolling_results/22.png" alt="Image 23">
+                              </div>
+                              <div class="marquee-item">
+                                <img src="static2/rolling_results/24.png" alt="Image 24">
+                              </div>
+                              <div class="marquee-item">
+                                <img src="static2/rolling_results/25.png" alt="Image 25">
+                              </div>
+                              <div class="marquee-item">
+                                <img src="static2/rolling_results/26.png" alt="Image 26">
+                              </div>
+                          </span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
   </section>
 
-<!-- <section class="section hero"></section>
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column">
-        <h2 class="title is-3">Image Editing Examples</h2>
-        <div class="content has-text-justified">
-          <img src="static2/more_vis.png" />
-        </div>
-        <p class="content has-text-justified">
-          The existing perceptual model can serve as an excellent visual generation quality feedback provider for the diffusion model. 
-          Take the instance segmentation model as an example, it accurately captures the defect of the generation(e.g. the distort arm of the boy)
-        </p>
-      </div>
-    </div>
-  </div>
-</section> -->
 
-
-<section class="section">
+<section class="section hero">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Introducing user-specified visual concepts in image editing is highly practical as these concepts convey the user's intent more precisely than text-based descriptions. We propose <b><i>FreeEdit</i></b>, a novel approach for achieving such <i>reference-based image editing</i>, which can accurately reproduce the visual concept from the reference image based on user-friendly language instructions. Our approach leverages the <b>multi-modal instruction encoder</b> to encode language instructions to guide the editing process. This implicit way of locating the editing area eliminates the need for manual editing masks. To enhance the reconstruction of reference details, we introduce the <b>Decoupled Residual ReferAttention (DRRA)</b> module. This module is designed to integrate fine-grained reference features extracted by a detail extractor into the image editing process in a residual way without interfering with the original self-attention. Given that existing datasets are unsuitable for reference-based image editing tasks, particularly due to the difficulty in constructing image triplets that include a reference image, we curate a high-quality dataset, <b><i>FreeBench</i></b>, using a newly developed twice-repainting scheme. FreeBench comprises the images before and after editing, detailed editing instructions, as well as a reference image that maintains the identity of the edited object, encompassing tasks such as object addition, replacement, and deletion. By conducting phased training on FreeBench followed by quality tuning, FreeEdit achieves high-quality zero-shot editing through convenient language instructions. We conduct extensive experiments to evaluate the effectiveness of FreeEdit across multiple task types, demonstrating its superiority over existing methods.
-          </p>
+            We introduce a new setting, Edit Transfer, where a model learns a transformation from just a single source–target example and applies it to a new query image. While text-based methods excel at semantic manipulations through textual prompts, they often struggle with precise geometric details (e.g., poses and viewpoint changes). Reference-based editing, on the other hand, typically focuses on style or appearance and fails at non-rigid transformations. By explicitly learning the editing transformation from a source–target pair, Edit Transfer mitigates the limitations of both text-only and appearance-centric references. Drawing inspiration from in-context learning in large language models, we propose a visual relation in-context learning paradigm, building upon a DiT-based text-to-image model. We arrange the edited example and the query image into a unified four-panel composite, then apply lightweight LoRA fine-tuning to capture complex spatial transformations from minimal examples. Despite using only 42 training samples, Edit Transfer substantially outperforms state-of-the-art TIE and RIE methods on diverse non-rigid scenarios, demonstrating the effectiveness of few-shot visual relation learning. </p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="hero teaser">
-  <div class="hero-body">
+
+<section class="section hero">
     <div class="container is-max-desktop">
       <div class="columns is-centered has-text-centered">
         <div class="column is-six-fifths">
@@ -213,46 +345,32 @@
       <h2 class="subtitle has-text-justified">
         <figure style="width: 100%;">
           <!-- <a href="assets/figures/overview.png"> -->
-          <img width="100%" src="static2/pipeline.png" />
+          <img width="100%" src="static2/framework.png" />
           <!-- </a> -->
         </figure>
       </h2>
     </div>
   </div>
   <p class="content has-text-justified">
-    <b>Pipeline</b>: FreeEdit consists of three components: (a) Multi-modal instruction encoder. (b) Detail extractor. (c) Denosing U-Net. Text instruction and reference image are firstly fed into the <b>multi-modal instruction encoder</b> to generate multi-modal instruction embedding. The reference image is additionally fed into the <b>detail extractor</b> to obtain fine-grained features. The original image latent is concatenated with the noise latent to introduce the original image condition. 
-    <b>Denosing U-Net</b> accepts the 8-channel input and interacts with the multi-modal instruction embedding through cross-attention. The <b>DRRA</b> modules which connect the detail extractor and the denoising U-Net, are used to integrate fine-grained features from the detail extractor to promote ID consistency with the reference image. (d) The editing examples obtained using FreeEdit.
+    <b>Visual relation in-context learning for Edit Transfer.</b> (a) We arrange in-context examples in a four-panel layout: the top row
+(an editing pair \((I_s, I_t)\)) and the bottom row (the query pair \(( \hat{I}_s, \hat{I}_t )\)). Our goal is to to learn the transformation from \(I_s\) \(\rightarrow\) \(I_t\), and apply
+it to the bottom-left image \(\hat{I}_s\), producing the target \(\hat{I}_t\), in the bottom-right. (b) We fine-tune a lightweight LoRA in the MMA to better
+capture visual relations. Noise addition and removal are applied only to \(z_t\), while the conditional tokens \(c_T\) ( derived from \((I_s, I_t, \hat{I}_s)\) )
+remain noise-free. (c) Finally, we cast Edit Transfer as an image generation task by initializing the bottom-right latent token \(z_T\) with
+random noise and concatenating it with the clean tokens \(c_I\). Leveraging the enhanced in-context capability of the fine-tuned DiT blocks,
+the model generates \(I_t\), effectively transferring the same edits from the top row to the bottom-left image.
    </p>
+   <h3 class="title is-3">Traning data samples.</h3>
+   <div class="content has-text-justified">
+     <img src="static2/dataset.png" />
+   </div>
+   <p class="content has-text-justified">
+    To encode a clear "source image \(\rightarrow\) edited image" order, we arrange each example-request pair into a 2 × 2 composite: the first row contains the example pair (Is, It), and the second row contains the request pair \((\hat{I}_s, \hat{I}_t)\).
+  </p>
 </div>
 </section>
 
-<section class="section hero"></section>
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column">
-        <h2 class="title is-3">Dataset</h2>
-        <p class="content has-text-justified">
-          To address the lack of datasets, we developed <b><i>FreeBench</i></b>, a highquality dataset designed to support reference-based instruction-driven editing. Previous studies always struggled with constructing image triplets that include the original, edited, and reference images, because it is difficult to maintain the ID consistency of the reference images and the edited images.
-          To resolve this, we implement a <b>twice-repainting construction scheme</b> to ensure identity consistency between the edited object and the reference, based on the real-world segmentation dataset.
-        </p>
-        <div class="content has-text-justified">
-          <img src="static2/data.png" />
-        </div>
-        <p class="content has-text-justified">
-          Pipeline for dataset construction and examples of training samples. (a) <b>Image triplet construction</b>. We repaint the source image in the existing real-world segmentation dataset twice to form the image triplet. (b) <b>Instruction Construction</b>. We use multiple powerful MLLMs to caption the generated image, and combine the resulting local descriptions with instruction templates to form edit instructions. (c) Examples of the training dataset. The item in the dataset contains images before and after editing and a multi-modal instruction.
-        </p>
 
-        <div class="content has-text-justified">
-          <img src="static2/class4.png" />
-        </div>
-        <p class="content has-text-justified">
-          Statistics for the FreeBench dataset. The first four parent classes in FreeBench are animals, food, kitchenware, and vehicles. FreeBench covers the vast majority of categories in daily life, allowing us to train a generalizable zero-shot reference-based image editing model.
-        </p>
-
-      </div>
-    </div>
-  </div>
-</section>
 
 
 
@@ -260,118 +378,25 @@
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column">
-        <h2 class="title is-3">Reference-based Image Editing</h2>
+        <h2 class="title is-3">Generalization Performance</h2>
         <p class="content has-text-justified">
         </p>
         <div class="content has-text-justified">
-          <img src="static2/comp.png" />
+          <img src="static2/generalization.png" />
         </div>
         <p class="content has-text-justified">
-          <b>Qualitative comparisons</b> of FreeEdit with previous methods, including mask-based methods PaintByExample, AnyDoor, MimicBrush, and mask-free methods InstructPix2Pix, Kosmos-G. <b>Mask-based methods</b> require the user to manually provide the mask of the editing area. AnyDoor also needs to provide a foreground mask of the reference image, and the editing mask fed to AnyDoor will be processed as a box because its training is box-based. <b>Mask-free methods</b> are language-based and don't require additional mask input, where we take InstructPix2Pix with detailed instructions as a baseline for comparison. The inputs required for each method are marked below each line of images. S* denotes the specific visual concept in the reference image, and O* denotes the original image to be edited.
+          <b>Generalization performance of Edit Transfer.</b> Our model demonstrates remarkable generalization by: (b) Generating novel
+pose variations within a given editing type, even if such variations were unseen during training; (c) Flexibly combining different editing
+types; (d) Transferring its capabilities across other species
         </p>
-
       </div>
     </div>
   </div>
 </section>
 
 
-<section class="section hero"></section>
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column">
-        <h2 class="title is-3">Object Removal</h2>
-        <p class="content has-text-justified">
-          Previous reference-based inpainting methods use image features as a control condition for cross-attention, which makes the trained model no longer able to support other tasks. Instead, FreeEdit could support reference-free object removal task by simply setting the reference scale λ in DRRA to 0 due to flexible reference attention and multi-modal language instructions.
-        </p>
-        <div class="content has-text-justified">
-          <img src="static2/rm.png" />
-        </div>
-        <p class="content has-text-justified">
-          A qualitative comparison of FreeEdit with SD-Inpainting and InstructPix2Pix on the object removal task. SD-Inpainting requires the edit area mask of the object to be deleted, while our FreeEdit and InstructPix2Pix perform object removal without the need for masks in the form of language instructions. The input mask for SD-Inpainting is highlighted in green in the 2nd column.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section hero"></section>
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column">
-        <h2 class="title is-3">Plain-text instruction-driven Editing</h2>
-        <p class="content has-text-justified">
-          As with object removal task, FreeEdit also supports a broader range of plain-text instruction-driven editing which is not limited to a specific type of editing, as our multi-modal instructions are closely related to text instructions.
-        </p>
-        <div class="content has-text-justified">
-          <img src="static2/text.png" />
-        </div>
-        <p class="content has-text-justified">
-          The Visual comparison of FreeEdit with InstructPix2Pix and MagicBrush on plain-text instruction-driven editing task. The corresponding text instruction used for each edit case is marked below the corresponding images.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section hero">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column">
-        <h2 class="title is-3">Mask-free Virtual Try-on</h2>
-        <div class="content has-text-justified">
-          <img src="static2/tryon.png" />
-        </div>
-        <p class="content has-text-justified">
-          As a versatile reference-based image editing model, FreeEdit can be extended to virtual try-on task. Different from the previous methods, FreeEdit simplifies the inference pipeline of virtual try-on. Users could execute the task according to a concise multi-modal language instruction such as "replace her top with S*" that conforms to human habits and does not need to provide a manual mask.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- <section class="section hero"></section>
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column">
-        <h2 class="title is-3">Comparsions</h2>
-        <div class="content has-text-justified">
-          <img src="static2/text.png" />
-        </div>
-        <div class="content has-text-justified">
-          <img src="static2/tryon.png" />
-        </div>
-        <p class="content has-text-justified">
-          UniFL exhibits a remarkable advantage over existing methods that concentrate on quality optimization and inference acceleration in terms of both quantitative comparison and user study.
-        </p>
-       
-      </div>
-      
-    </div>
-  </div>
-</section> -->
 
 
-<!-- <section class="section hero">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered has-text-centered">
-      <div class="column">
-        <h2 class="title is-3">Comparsions</h2>
-        <div class="content has-text-justified">
-          <img src="static/images/visualization.jpg" />
-        </div>
-        <div class="content has-text-justified">
-          <img src="static/images/gsb.jpg" />
-        </div>
-        <p class="content has-text-justified">
-          UniFL exhibits a remarkable advantage over existing methods that concentrate on quality optimization and inference acceleration in terms of both quantitative comparison and user study.
-        </p>
-       
-      </div>
-      
-    </div>
-  </div>
-</section> -->
 
 <section class="section" id="BibTeX">
   <div class="container content is-max-desktop">
@@ -399,7 +424,7 @@
       <div class="column is-6">
         <div class="content">
           <p>
-             The source code of this webpage is based on the <a href="https://github.com/nerfies/nerfies.github.io/"> Nerfies</a> project webpage.
+             The source code of this webpage is based on the <a href="https://github.com/freeedit/freeedit.github.io"> FreeEdit</a> project webpage.
           </p>
         </div>
       </div>
